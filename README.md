@@ -27,16 +27,16 @@ User Task:
 - CSS + HTML
 - Stripe Payments
 - Firebase
- ### Service 
+ ### Distributed System Tech Stack+ 
 - Apollo-Federation Router (Rust)
 - Async GraphQL 
 - Actix-Web
 - Redis
-- Docker / Kubernetes (soon)
+- Docker / Kubernetes (wip)
 - Async SQLx + PostgreSQL
 - ScyllaDB/ CassandraDB 
 - Apache Kafka
-- ~~Apache Spark (pySpark)~~ 
+- ~~Apache Spark (pySpark)~~ (wip w/ tensorflow)
 - ~~Hadoop(HDFS)~~ 
 - AWS WORKFLOW
 - Elastic Stack (Elasticsearch, Kabana)
