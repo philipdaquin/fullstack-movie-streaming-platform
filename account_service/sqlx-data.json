@@ -1,0 +1,656 @@
+{
+  "db": "PostgreSQL",
+  "0d6e66a6206ac72e0c7711984ab8c6689ba1f9b9e0edff189914b5dc9ab30591": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid"
+        ]
+      }
+    },
+    "query": "DELETE FROM profiles WHERE profile_id = $1 AND id = $2"
+  },
+  "26e7e05427bc7dabcd7815d27764fda2baf4cfe60a2d2d6ee2a1f773dccbbce2": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "email",
+          "ordinal": 1,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "hash",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "username",
+          "ordinal": 5,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "first_name",
+          "ordinal": 6,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_name",
+          "ordinal": 7,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "image_url",
+          "ordinal": 8,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_login_at",
+          "ordinal": 9,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "role",
+          "ordinal": 10,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "SELECT * FROM users"
+  },
+  "354204f527a360ee2214bfd3de14ebbee709eea2318b830a21bf44c3c322c743": {
+    "describe": {
+      "columns": [
+        {
+          "name": "profile_id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "id",
+          "ordinal": 1,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "username",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      }
+    },
+    "query": "SELECT * FROM profiles WHERE profile_id = $1"
+  },
+  "441bf6be3339f769285bd2d06de606e65b2bc041ad5c46384143ed053caae7db": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Timestamp",
+          "Uuid",
+          "Uuid"
+        ]
+      }
+    },
+    "query": "UPDATE profiles SET\n            username = $1, \n            updated_at = $2\n            WHERE id = $3 AND profile_id = $4\n        "
+  },
+  "50293c2e54af11d4c2a553e29b671cef087a159c6ee7182d8ca929ecb748f3b7": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      }
+    },
+    "query": "DELETE FROM users WHERE id = $1"
+  },
+  "509e1f99bb4c458a1c78e210356d819bda004f036b10910a5be517222426d3a2": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Uuid"
+        ]
+      }
+    },
+    "query": " UPDATE users SET hash = $1 WHERE id = $2"
+  },
+  "606364c79e0990deb07dfbe6c32b3d302d083ec5333f3a5ce04113c38a041100": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "email",
+          "ordinal": 1,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "hash",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "username",
+          "ordinal": 5,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "first_name",
+          "ordinal": 6,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_name",
+          "ordinal": 7,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "image_url",
+          "ordinal": 8,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_login_at",
+          "ordinal": 9,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "role",
+          "ordinal": 10,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT * FROM users WHERE username = $1"
+  },
+  "80375a6c8798fe5654e9c142d71a1ec68703141ca8aece90742f681d46bbcbe8": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Timestamp",
+          "Uuid"
+        ]
+      }
+    },
+    "query": "UPDATE users SET last_login_at = $1 WHERE id = $2"
+  },
+  "8354256e494280fd09a2ee2d81ad42b10ad6bd7eff75670e7900b84647168907": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text",
+          "Timestamp",
+          "Varchar",
+          "Varchar",
+          "Varchar",
+          "Varchar",
+          "Uuid"
+        ]
+      }
+    },
+    "query": " UPDATE users SET \n                    email = $1,\n                    hash = $2,\n                    updated_at = $3,\n                    username =$4,\n                    first_name = $5 ,\n                    last_name = $6,\n                    image_url = $7\n                WHERE id = $8\n            "
+  },
+  "843923b9a0257cf80f1dff554e7dc8fdfc05f489328e8376513124dfb42996e3": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "email",
+          "ordinal": 1,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "hash",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "username",
+          "ordinal": 5,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "first_name",
+          "ordinal": 6,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_name",
+          "ordinal": 7,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "image_url",
+          "ordinal": 8,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_login_at",
+          "ordinal": 9,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "role",
+          "ordinal": 10,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      }
+    },
+    "query": "SELECT * FROM users WHERE id = $1"
+  },
+  "a6ce229283ccb1ffec8a18cfdcb751b9bbfd620a10d506c813ec519160919c52": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "email",
+          "ordinal": 1,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "hash",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "username",
+          "ordinal": 5,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "first_name",
+          "ordinal": 6,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_name",
+          "ordinal": 7,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "image_url",
+          "ordinal": 8,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_login_at",
+          "ordinal": 9,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "role",
+          "ordinal": 10,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      }
+    },
+    "query": "SELECT * FROM users where id = $1"
+  },
+  "ad81a81ecdadd5ff15e28bf86ea10365d44f91064649d116c68c2458b3860c62": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Uuid",
+          "Varchar",
+          "Timestamp",
+          "Timestamp"
+        ]
+      }
+    },
+    "query": "INSERT INTO profiles (\n            profile_id,\n            id,\n            username,\n            created_at,\n            updated_at\n        ) VALUES ($1, $2, $3, $4, $5)"
+  },
+  "b9763417f3adfc07684127cdcac84faec0c0cb4b723309b42263f1eae53705dd": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Varchar",
+          "Text",
+          "Timestamp",
+          "Timestamp",
+          "Varchar",
+          "Varchar",
+          "Varchar",
+          "Varchar",
+          "Timestamp",
+          "Varchar"
+        ]
+      }
+    },
+    "query": "\n            INSERT INTO users (\n                id,\n                email,\n                hash,\n                created_at,\n                updated_at,\n                username,\n                first_name,\n                last_name,\n                image_url,\n                last_login_at,\n                role\n            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)\n        "
+  },
+  "baa418e35feea80edaacf7a20142a235d0de1be65b4d745ee41986102a430377": {
+    "describe": {
+      "columns": [
+        {
+          "name": "profile_id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "id",
+          "ordinal": 1,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "username",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT * FROM profiles WHERE username = $1"
+  },
+  "d9db2b6c9db243005b52295e4037ce305bb1f0c0bd8afb9704ac33bee8dceede": {
+    "describe": {
+      "columns": [
+        {
+          "name": "profile_id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "id",
+          "ordinal": 1,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "username",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      }
+    },
+    "query": "SELECT * FROM profiles WHERE id = $1"
+  },
+  "f3f58600e971f1be6cbe206bba24f77769f54c6230e28f5b3dc719b869d9cb3f": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "email",
+          "ordinal": 1,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "hash",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "username",
+          "ordinal": 5,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "first_name",
+          "ordinal": 6,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_name",
+          "ordinal": 7,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "image_url",
+          "ordinal": 8,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "last_login_at",
+          "ordinal": 9,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "role",
+          "ordinal": 10,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT * FROM users WHERE email = $1"
+  }
+}

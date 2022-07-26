@@ -1,0 +1,14 @@
+[workspace]
+members = [
+    "account_service", 
+    "asset_service",
+    "common_utils",
+    "products",
+    "asset_ingestion_service",
+    "search_service",
+    "kafka_search_ingest",
+    "activity_tracker",
+    "tensorflow_consumer",
+    "recommendation_service"
+]
+

@@ -1,0 +1,33 @@
+version: '3'
+services:
+  apollo-router:
+    container_name: apollo-router
+    image: ghcr.io/apollographql/router:v0.9.1
+    volumes:
+      - ./router.yaml:/dist/config/router.yaml
+    command: [ "-c", "config/router.yaml", "--log", "info" ]
+    env_file: # create with make graph-api-env
+      - .env
+    ports:
+      - "4000:4000"
+  account_service:
+    container_name: netflix-clone-wasm_account_service
+    build: ../account_service/
+  products:
+    container_name: netflix-clone-wasm_products
+    build: ../products/
+  asset_ingestion_service:
+    container_name: netflix-clone-wasm_asset_ingestion_service
+    build: ../asset_ingestion_service/
+  asset_service:
+    container_name: netflix-clone-wasm_asset_service
+    build: ../asset_service/
+  search_service:
+    container_name: netflix-clone-wasm_search_service
+    build: ../search_service/
+  activity_tracker:
+    container_name: netflix-clone-wasm_activity_tracker
+    build: ../activity_tracker/
+  recommendation_service:
+    container_name: netflix-clone-wasm_recommendation_service
+    build: ../recommendation_service/

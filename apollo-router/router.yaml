@@ -1,0 +1,41 @@
+server:
+  # The socket address and port to listen on 
+  # Defaults to 127.0.0.1:4000
+  listen: 0.0.0.0:4000
+  # The exposed endpoint to answer to GraphQL queries
+  # (Defaults to /)
+  endpoint: /
+  # By default, the router displaus a landing if you access this behaviour, switch to true
+  # to access default apollo federation landing page 
+  introspection: true
+  # If False 
+  landing_page: true
+  cors:
+    allow_any_origin: true
+    origins: []
+    methods: [POST, OPTIONS, GET]
+    allow_headers: [ Content-Type, Authorization, x-my-custom-required-header, x-and-an-other-required-header ]
+    expose_headers: []
+telemetry:
+  tracing:
+    trace_config:
+      service_name: "router"
+      service_namespace: "apollo"
+      # Optional. Either a float between 0 and 1 or 'always_on' or 'always_off'
+      sampler: 0.1
+      
+      # Optional. Use a parent based sampler. This enables remote spans help make a decision on if a span is sampeld or not.  
+      # https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/sdk.md#parentbased
+      parent_based_sampler: false
+      
+      # Optional limits 
+      max_attributes_per_event: 10
+      max_attributes_per_link: 10
+      max_attributes_per_span: 10
+      max_events_per_span: 10
+      max_links_per_span: 10
+      
+      # Attributes particular to an exporter that have not
+      # been explicitly handled in Router configuration.
+      attributes: 
+        some.config.attribute: "config value"

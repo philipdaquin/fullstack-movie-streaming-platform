@@ -1,0 +1,77 @@
+[package]
+name = "account_service"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix = "0.13.0"
+actix-web = "4.0.1"
+actix-web-lab = "0.16.4"
+actix-cors = "0.6"
+async-graphql = { version = "4.0.5", features = ["apollo_tracing", "tracing", "chrono", "uuid", "password-strength-validator"] }
+async-graphql-actix-web = "4.0.1"
+async-graphql-parser = "4.0.5"
+# argonautica = "0.2.0"
+env_logger = "0.9"
+log = "0.4"
+slab = "0.4.2"
+dotenv = "0.15.0"
+failure = "0.1.8"
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+async-trait = "0.1.53"
+sqlx = { version = "0.5.13", default-features = false, features = ["runtime-tokio-native-tls", "macros", "postgres", "uuid", "chrono", "migrate", "offline", "json", "offline"] }
+uuid = { version = "0.8.0", features = ["serde", "v4"] }
+common_utils = { path= "../common_utils" }
+lazy_static = "1.4.0"
+strum = "0.24.0"
+strum_macros = "0.24.0"
+# Redis------------------------------
+redis = { version = "0.21.5", features = ["tokio-comp", "connection-manager"] }
+futures = "0.3.21"
+bcrypt = "0.13"
+## Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3.11", features = ["registry", "env-filter"] }
+tracing-futures = "0.2"
+tracing-log = "0.1"
+tracing-bunyan-formatter = "0.3.2"
+
+## Open Telemetry/ Prometheus
+opentelemetry = { version = "0.17.0", features = ["metrics", "tokio"] } 
+tracing-actix-web = { version = "0.6.0", features = ["opentelemetry_0_17"]}
+opentelemetry-jaeger = { version = "0.16", features = ["rt-tokio-current-thread"] }
+tracing-opentelemetry = "0.17.3"
+actix-web-opentelemetry = "0.12.0"
+prometheus = "0.13.1"
+async_graphql_telemetry_extension = { git = "https://github.com/naamancurtis/async_graphql_telemetry_extension", branch = "main" }
+
+[profile.release]
+# Less code to include into binary
+panic = 'abort'
+# Optimization over all codebase ( better optimization, slower build )
+codegen-units = 1
+# Optimization for size ( most aggressive )
+opt-level = 'z'
+# Link time optimization using using whole-program analysis
+lto = true
+
+debug =true
+
+[dev-dependencies]
+serde_json = "1.0.82"
+jsonpath_lib = "0.3.0"
+base64 = "0.13.0"
+
+# Compile time verified queries do quite a bit of work at compile time. 
+# Incremental actions like cargo check and cargo build can be significantly 
+# faster when using an optimized build by putting the following in your Cargo.toml (
+# More information in the Profiles section of The Cargo Book)
+[profile.dev.package.sqlx-macros]
+opt-level = 3
+
+# cargo sqlx prepare -- --all-targets --all-features

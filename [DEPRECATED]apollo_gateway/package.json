@@ -1,0 +1,20 @@
+{
+  "name": "apollo_gateway",
+  "version": "1.0.0",
+  "description": "apollo gateway",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-gateway": "nodemon index.js"
+  },
+  "author": "philip daquin",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/gateway": "^2.0.4",
+    "apollo-server": "^3.8.1",
+    "graphql": "^16.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}

@@ -1,0 +1,50 @@
+
+
+
+
+"""
+ISO 8601 calendar date without timezone.
+Format: %Y-%m-%d
+
+# Examples
+
+* `1994-11-13`
+* `2000-02-24`
+"""
+scalar NaiveDate
+
+type Query {
+	getUserRecentRecommendations(userId: Int!): [RecommendedType!]!
+	getAllRecommendedMovies: [RecommendedType!]!
+	getUserRecommendation(userId: Int!): [RecommendedType!]!
+	_service: _Service!
+	_entities(representations: [_Any!]!): [_Entity]!
+}
+
+type RecommendedType {
+	userId: Int!
+	movieId: Int!
+	createdAt: NaiveDate!
+	title: String!
+}
+
+
+type UserType {
+	id: ID!
+}
+
+"""
+The `_Any` scalar is used to pass representations of entities from external
+services into the root `_entities` field for execution.
+"""
+scalar _Any
+
+union _Entity = UserType
+
+type _Service {
+	sdl: String
+}
+
+schema {
+	query: Query
+}

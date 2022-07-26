@@ -1,0 +1,42 @@
+version: '3.9'
+services:
+  # account_service:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./account_service/Dockerfile
+  activity_tracker:
+    build: 
+      context: .
+      dockerfile: ./activity_tracker/Dockerfile
+  # asset_ingestion_service:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./asset_ingestion_service/Dockerfile
+  # asset_service:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./asset_service/Dockerfile
+  # kafka_search_ingest:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./kafka_search_ingest/Dockerfile
+  # products:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./products/Dockerfile
+  # recommendation_service:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./recommendation_service/Dockerfile
+  # search_service:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./search_service/Dockerfile
+  # tensorflow_consumer:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./tensorflow_consumer/Dockerfile
+  # tensorflow_ml:
+  #   build:
+  #     context: .
+  #     dockerfile: ./tensorflow_ml/Dockerfile

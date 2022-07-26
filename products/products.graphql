@@ -1,0 +1,85 @@
+
+
+
+
+type Mutation {
+	createNewProduct(newProduct: NewProductInput!): ProductType
+	updateProduct(productId: ID!, userId: ID!, newInput: NewProductInput!): ProductType!
+	deleteProduct(productId: ID!): Boolean!
+}
+
+"""
+ISO 8601 combined date and time without timezone.
+
+# Examples
+
+* `2015-07-01T08:59:60.123`,
+"""
+scalar NaiveDateTime
+
+input NewProductInput {
+	name: String!
+	price: Int
+	weight: Int
+	category: String
+	createdBy: Int
+	tags: String
+	"""
+	users should not be able tto change the time manually
+	"""
+	createdAt: NaiveDateTime
+	updatedAt: NaiveDateTime
+	description: String
+	imageUrl: String
+}
+
+"""
+The Price Type in our System
+"""
+type ProductType {
+	id: ID!
+	name: String!
+	"""
+	Price attribute can be Zero
+	"""
+	price: Int
+	weight: Int
+	category: String
+	createdBy: Int
+	tags: String
+	createdAt: NaiveDateTime
+	updatedAt: NaiveDateTime
+	description: String
+	imageUrl: String
+}
+
+type Query {
+	"""
+	Get all products found inside the Database
+	"""
+	getAllProducts: [ProductType!]!
+	getProductById(id: ID!): ProductType
+	getShippingEstimate(id: ID!): Int
+	getProductsByCategory(category: String!): [ProductType!]!
+	getProductsByTags(tag: String!): [ProductType!]!
+	_service: _Service!
+	_entities(representations: [_Any!]!): [_Entity]!
+}
+
+
+"""
+The `_Any` scalar is used to pass representations of entities from external
+services into the root `_entities` field for execution.
+"""
+scalar _Any
+
+union _Entity = ProductType
+
+type _Service {
+	sdl: String
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}

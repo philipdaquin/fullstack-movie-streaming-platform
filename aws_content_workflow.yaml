@@ -1,0 +1,200 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "This is the initial design, currently deprecated in favour of AWS VOD Template!!"
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: 'transcodekit'
+
+Resources:
+  TranscodekitLambdaPolicy:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      Description: Provides necessary access to MediaConvert and CloudWatch logs
+      ManagedPolicyName: !Join
+        - '-'
+        - - !Ref 'AWS::Region'
+          - TranscodekitLambdaExecutor
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - mediaconvert:CreateJob
+              - mediaconvert:DescribeEndpoints
+            Resource:
+              - '*'
+          - Effect: Allow
+            Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Resource:
+              - '*'
+          - Effect: Allow
+            Action:
+              - 'iam:PassRole'
+            Resource:
+              - !GetAtt MediaConvertRole.Arn
+
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: LambdaExecution
+      Description: Allows Transcodekit lambda function to start MediaConvert job
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - !Ref TranscodekitLambdaPolicy
+
+  TranscodeVideoFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: TranscodeVideo
+      Description: Sends uploaded S3 object to MediaConvert for transcoding
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          ROLE: !GetAtt MediaConvertRole.Arn
+      Code:
+        ZipFile: |
+          const path = require('path')
+          const MediaConvert = require('aws-sdk/clients/mediaconvert')
+
+          exports.handler = async function(event, context, cb) {
+            const mediaConvert = new MediaConvert({
+              apiVersion: '2017-08-29'
+            })
+            const s3Record = event.Records[0].s3
+            const { base: fileName, name: title } = path.parse(s3Record.object.key)
+
+            try {
+              const { Endpoints: [{ Url: endpoint }]} = await mediaConvert.describeEndpoints().promise()
+              mediaConvert.endpoint = endpoint
+
+              const hlsResponse = await mediaConvert.createJob({
+                Role: process.env.ROLE,
+                JobTemplate: 'System-Ott_Hls_Ts_Avc_Aac',
+                Settings: {
+                  Inputs: [{
+                    FileInput: `s3://${s3Record.bucket.name}/${s3Record.object.key}`,
+                    AudioSelectors: {
+                      'Audio Selector 1': {
+                        Offset: 0
+                      }
+                    },
+                  }],
+                  OutputGroups: [{
+                    OutputGroupSettings: {
+                      Type: 'HLS_GROUP_SETTINGS',
+                      HlsGroupSettings: {
+                        Destination: `s3://${s3Record.bucket.name}/assets/${title}/hls/`
+                      }
+                    }
+                  }]
+                },
+              }).promise()
+
+              const dashResponse = await mediaConvert.createJob({
+                Role: process.env.ROLE,
+                JobTemplate: 'System-Ott_Dash_Mp4_Avc_Aac',
+                Settings: {
+                  Inputs: [{
+                    FileInput: `s3://${s3Record.bucket.name}/${s3Record.object.key}`,
+                    AudioSelectors: {
+                      'Audio Selector 1': {
+                        Offset: 0
+                      }
+                    },
+                  }],
+                  OutputGroups: [{
+                    OutputGroupSettings: {
+                      Type: 'DASH_ISO_GROUP_SETTINGS',
+                      DashIsoGroupSettings: {
+                        Destination: `s3://${s3Record.bucket.name}/assets/${title}/dash/`
+                      }
+                    }
+                  }]
+                },
+              }).promise()
+
+              cb(null, [hlsResponse, dashResponse])
+            } catch (e) {
+              cb(e.message)
+            }
+          }
+      Runtime: nodejs12.x
+
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DependsOn:
+      - S3ExecutionPermission
+    Properties:
+      BucketName: !Ref BucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: 's3:ObjectCreated:*'
+            Function: !GetAtt TranscodeVideoFunction.Arn
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: 'originals/'
+
+  S3ExecutionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt TranscodeVideoFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref 'AWS::AccountId'
+      SourceArn: !Sub 'arn:aws:s3:::${BucketName}'
+
+  TranscodekitMediaConvertPolicy:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      ManagedPolicyName: !Join
+        - '-'
+        - - !Ref 'AWS::Region'
+          - TranscodekitMediaConverter
+      Description: Provides access to S3 for MediaConvert transcode jobs
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - 's3:PutObject'
+            Resource:
+              - !Sub 'arn:aws:s3:::${BucketName}/assets/*'
+          - Effect: Allow
+            Action:
+              - 's3:GetObject'
+            Resource:
+              - !Sub 'arn:aws:s3:::${BucketName}/originals/*'
+
+  MediaConvertRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: MediaConvertExecution
+      Description: Allows MediaConvert to gain access to S3
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - mediaconvert.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - !Ref TranscodekitMediaConvertPolicy

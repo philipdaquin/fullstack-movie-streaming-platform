@@ -1,0 +1,10 @@
+/target/
+/Cargo.lock
+/apollo-gateway/ node_modules
+/apollo-gateway
+# local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

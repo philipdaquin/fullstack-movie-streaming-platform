@@ -1,0 +1,172 @@
+type AggregatedQuery {
+	genres: [Genre!]
+	movieList: [MovieType!]
+}
+
+
+type BusinessData {
+	budget: Int!
+	revenue: Int!
+}
+
+input FilterQuery {
+	termName: String
+	termValue: String
+	totalResult: Int
+	indexName: String!
+}
+
+
+type Genre {
+	docCount: Int!
+	key: String!
+}
+
+
+
+type MovieRating {
+	imdbId: String!
+	metascore: Int!
+	popularity: Float!
+	voteCount: Int!
+	voteAverage: Float!
+}
+
+type MovieType {
+	movieId: ID!
+	title: String!
+	year: Int!
+	awards: [String!]!
+	business: BusinessData!
+	countries: [String!]!
+	genres: [String!]!
+	homepage: String!
+	keywords: [String!]!
+	languages: [String!]!
+	mediaType: String!
+	movieCasts: [String!]!
+	movieCompany: [String!]!
+	movieDirector: [String!]!
+	movieWriter: [String!]!
+	overview: String!
+	poster: String!
+	rated: String!
+	rating: MovieRating!
+	releaseDate: NaiveDate!
+	runtime: Int!
+	status: String!
+	videoFile: String!
+}
+
+type Mutation {
+	"""
+	Deletes the index under this id
+	"""
+	deleteMovieDocByID(movieId: ID!): Boolean!
+}
+
+"""
+ISO 8601 calendar date without timezone.
+Format: %Y-%m-%d
+
+# Examples
+
+* `1994-11-13`
+* `2000-02-24`
+"""
+scalar NaiveDate
+
+type ProductionCompanyType {
+	companyId: ID!
+}
+
+type Query {
+	"""
+	Retrieve all indexed movies
+	"""
+	searchAll(totalResult: Int, indexName: String! = "index_name()"): [MovieType!]!
+	"""
+	Retrieve all indexed movies
+	"""
+	searchMovie(input: SearchTextInput!): AggregatedQuery
+	"""
+	Execute this query under index_name with
+	Filter by term_name: term_value and give total_results
+	"""
+	filterBy(filter: FilterQuery!): [MovieType!]!
+	"""
+	For the sake of simplicity and ease of use in the frontend,
+	and after facing several alongside, I decided to get rid of using here struct
+	"""
+	searchWithAggregatedFilter(query: String, termName: String, termValue: String, totalResult: Int, indexName: String! = "index_name()", fields: [String!], sortBy: String, order: String): [MovieType!]!
+	"""
+	Default Values of sort is Descending
+	"""
+	sortMoviesAccordingly(input: SortAllMovies!): [MovieType!]!
+	_service: _Service!
+	_entities(representations: [_Any!]!): [_Entity]!
+}
+
+input SearchTextInput {
+	"""
+	Default Value to be Null or an empty string
+	"""
+	query: String
+	"""
+	Default Value is set to 2 search results
+	"""
+	totalResult: Int
+	indexName: String! = "index_name()"
+	"""
+	Default Value of Sorting is made for
+	Ratings.Popularity, ASC
+	"""
+	sortBy: String
+	"""
+	Defaulted to ASC
+	"""
+	order: String
+	"""
+	Defaulted Agg field to Genres.Keyword
+	"""
+	aggField: String
+	"""
+	Defaulted size to 2
+	"""
+	aggSize: Int
+	"""
+	Filter Search result by:
+	Default Value set to genres
+	"""
+	filterBy: String
+	"""
+	Value to filter the searches
+	Default set to empty Strimng
+	"""
+	filterValue: String
+}
+
+input SortAllMovies {
+	termName: String
+	order: String
+	totalResult: Int
+	indexName: String!
+}
+
+
+"""
+The `_Any` scalar is used to pass representations of entities from external
+services into the root `_entities` field for execution.
+"""
+scalar _Any
+
+union _Entity = ProductionCompanyType
+
+type _Service {
+	sdl: String
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}

@@ -1,0 +1,92 @@
+
+type BusinessData {
+	budget: Int!
+	revenue: Int!
+}
+
+
+
+
+type MovieRating {
+	imdbId: String!
+	metascore: Int!
+	popularity: Float!
+	voteCount: Int!
+	voteAverage: Float!
+}
+
+type MovieType {
+	movieId: ID!
+	title: String!
+	year: Int!
+	awards: [String!]!
+	business: BusinessData!
+	countries: [String!]!
+	genres: [String!]!
+	homepage: String!
+	keywords: [String!]!
+	languages: [String!]!
+	mediaType: String!
+	movieCasts: [String!]!
+	movieCompany: [String!]!
+	movieDirector: [String!]!
+	movieWriter: [String!]!
+	overview: String!
+	poster: String!
+	rated: String!
+	rating: MovieRating!
+	releaseDate: NaiveDate!
+	runtime: Int!
+	status: String!
+	videoFile: String!
+}
+
+"""
+ISO 8601 calendar date without timezone.
+Format: %Y-%m-%d
+
+# Examples
+
+* `1994-11-13`
+* `2000-02-24`
+"""
+scalar NaiveDate
+
+type ProductionCompanyType {
+	companyId: ID!
+}
+
+type Query {
+	getAllMovies(pageSize: Int): [MovieType!]!
+	getMovieById(title: String!, id: ID!): MovieType!
+	"""
+	Keeping Elasticsearch in sync
+	Only accessible by an admin
+	Queue items into Kafka and into ElasticSearch
+	"""
+	ForcebatchIndexIntoElasticsearch(pageSize: Int): [MovieType!]!
+	"""
+	Our search indexing platform is more reliable if the search service can call the movie to be indexed
+	the incremental indexing pseed helps refresh data faster and appears more promptly in our consumer applications
+	"""
+	ForceIndexMovieByID(movieId: ID!, movieName: String!): MovieType!
+	_service: _Service!
+	_entities(representations: [_Any!]!): [_Entity]!
+}
+
+
+"""
+The `_Any` scalar is used to pass representations of entities from external
+services into the root `_entities` field for execution.
+"""
+scalar _Any
+
+union _Entity = MovieType | ProductionCompanyType
+
+type _Service {
+	sdl: String
+}
+
+schema {
+	query: Query
+}

@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Html, body, heading,  */
+@layer base { 
+    body { 
+        @apply bg-[#141414] text-white !scrollbar !scrollbar-track-transparent
+        !scrollbar-thumb-red-700 !scrollbar-thin;
+    }
+    header { 
+        @apply 
+        fixed top-0 flex w-full z-50 items-center justify-between p-4
+        transition-all duration-[0.4s] lg:px-10 lg:py-6; 
+    }
+}
+
+/* Custom classes  */
+@layer components { 
+    .headerLink { 
+        @apply cursor-pointer text-sm font-light text-[#e5e5e5] 
+            transition duration-[0.4s] 
+            hover:text-[#b3b3b3]
+        ;
+    }
+    .banner__button { 
+        @apply flex items-center gap-x-2 rounded-md
+            px-5 py-1.5 text-sm font-semibold transition hover:opacity-75
+            md:py-2.5 md:px-8 md:text-xl;
+    }
+    .input { 
+        @apply w-full rounded bg-[#333] px-5 py-3.5 placeholder-[gray] 
+        outline-none focus:bg-[#454545]
+    }
+    .modalButton { 
+        @apply flex h-11 w-11 items-center justify-center rounded-3xl border-2 border 
+        bg-[#2a2a2a]/60 transition hover:border-white/10 ease-in-out;
+    }
+    .plan__box { 
+        @apply relative mx-1.5 flex h-20 w-[calc(100%/3)] cursor-default
+        items-center justify-center font-semibold rounded-sm shadow 
+        bg-[#e50914]
+        after:absolute 
+        after:top-full 
+        after:left-1/2  
+        after:block 
+        after:-translate-x-1/2
+        after:border-8 after:border-b-0 
+        after:border-transparent
+        after:border-t-[#e50914]
+        after:content-[""]
+        md:h-32 
+        lg:mx-8;
+    }
+    .table__data { 
+        @apply w-[calc(100%/3)] p-2.5 text-center  md:w-[calc(60%/3)]
+    }
+    .table__row { 
+        @apply flex flex-wrap items-center font-medium
+    
+    }
+    .table__data__title { 
+        @apply text-center p-2.5 text-white font-semibold w-full md:w-2/5 md:p-3.5 md:text-left md:text-base;
+    }
+    .membership__link { 
+        @apply cursor-pointer text-blue-500 hover:underline 
+    }
+    
+
+}

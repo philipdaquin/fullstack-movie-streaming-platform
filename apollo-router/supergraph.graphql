@@ -1,0 +1,751 @@
+
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.2", for: EXECUTION)
+{
+  query: Query
+  mutation: Mutation
+}
+
+directive @join__field(graph: join__Graph!, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+type AggregatedQuery
+  @join__type(graph: SEARCH_SERVICE)
+{
+  genres: [Genre!]
+  movieList: [MovieType!]
+}
+
+input BulkStreamInsertData
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  discoverApi: String!
+  endpointPopular: String!
+  language: String
+  includedWith: String
+  numberOfBatch: Int
+}
+
+type BusinessData
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+  @join__type(graph: ASSET_SERVICE)
+  @join__type(graph: SEARCH_SERVICE)
+{
+  budget: Int!
+  revenue: Int!
+}
+
+input BusinessDataInput
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  budget: Int
+  revenue: Int
+}
+
+input FilterQuery
+  @join__type(graph: SEARCH_SERVICE)
+{
+  termName: String
+  termValue: String
+  totalResult: Int
+  indexName: String!
+}
+
+enum Gender
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  NOT_CONFIGURED
+  MALE
+  FEMALE
+  NON_BINARY
+  PREFER_TO_NOT_SAY
+}
+
+type Genre
+  @join__type(graph: SEARCH_SERVICE)
+{
+  docCount: Int!
+  key: String!
+}
+
+input InputProductionCompany
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  """Movie id, this may not be necessary anywmore"""
+  movieId: ID
+
+  """Company Name"""
+  name: String
+
+  """Company Description"""
+  description: String
+
+  """Company Location"""
+  headquarter: String
+
+  """Company Website"""
+  homepage: String
+
+  """S3 link to image"""
+  logoPath: String
+
+  """Country of origin"""
+  originCountry: String
+
+  """Parent Company"""
+  parentCompany: String
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  ACCOUNT_SERVICE @join__graph(name: "account_service", url: "http://localhost:4001/graphql")
+  ACTIVITY_TRACKER @join__graph(name: "activity_tracker", url: "http://localhost:4008/graphql")
+  ASSET_INGESTION_SERVICE @join__graph(name: "asset_ingestion_service", url: "http://localhost:4003/graphql")
+  ASSET_SERVICE @join__graph(name: "asset_service", url: "http://localhost:4004/graphql")
+  PRODUCTS @join__graph(name: "products", url: "http://localhost:4002/graphql")
+  RECOMMENDATION_SERVICE @join__graph(name: "recommendation_service", url: "http://localhost:4009/graphql")
+  SEARCH_SERVICE @join__graph(name: "search_service", url: "http://localhost:4006/graphql")
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+enum MediaRated
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  G
+  PG
+  PG_13
+  R
+  NC_17
+}
+
+enum MediaType
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  MOVIE
+  TV_SERIES
+  TRAILER
+}
+
+type MovieRating
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+  @join__type(graph: ASSET_SERVICE)
+  @join__type(graph: SEARCH_SERVICE)
+{
+  imdbId: String!
+  metascore: Int!
+  popularity: Float!
+  voteCount: Int!
+  voteAverage: Float!
+}
+
+input MovieRatingInput
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  imdbId: String
+  metascore: Int
+  popularity: Float
+  voteCount: Int
+  voteAverage: Float
+}
+
+type MovieType
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+  @join__type(graph: ASSET_SERVICE)
+  @join__type(graph: SEARCH_SERVICE)
+{
+  movieId: ID!
+  title: String!
+  year: Int!
+  awards: [String!]!
+  business: BusinessData!
+  countries: [String!]!
+  genres: [String!]!
+  homepage: String!
+  keywords: [String!]!
+  languages: [String!]!
+  mediaType: String!
+  movieCasts: [String!]!
+  movieCompany: [String!]!
+  movieDirector: [String!]!
+  movieWriter: [String!]!
+  overview: String!
+  poster: String!
+  rated: String!
+  rating: MovieRating!
+  releaseDate: NaiveDate!
+  runtime: Int!
+  status: String!
+  videoFile: String!
+}
+
+type Mutation
+  @join__type(graph: ACCOUNT_SERVICE)
+  @join__type(graph: ACTIVITY_TRACKER)
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+  @join__type(graph: PRODUCTS)
+  @join__type(graph: SEARCH_SERVICE)
+{
+  """Create new users using the User Input"""
+  createNewUsers(newUser: NewUserInput!): UserType! @join__field(graph: ACCOUNT_SERVICE)
+
+  """Deletes the User from the system"""
+  deleteUser(userId: ID!): Boolean! @join__field(graph: ACCOUNT_SERVICE)
+
+  """Update User Detaisl"""
+  updateUserDetails(userId: ID!, newUser: NewUserInput!): UserType! @join__field(graph: ACCOUNT_SERVICE)
+  updateUserPassword(userId: ID!, password: String!): UserType! @join__field(graph: ACCOUNT_SERVICE)
+
+  """Logins the user, Also Updates the LastUserLogin Row for the Same User"""
+  loginUser(user: UserLogin!): String! @join__field(graph: ACCOUNT_SERVICE)
+  createNewProfile(newUser: NewProfileInput!): ProfileType! @join__field(graph: ACCOUNT_SERVICE)
+  deleteProfile(userId: ID!, profileId: ID!): Boolean! @join__field(graph: ACCOUNT_SERVICE)
+  updateUserProfile(userId: ID!, profileId: ID!, newProfile: NewProfileInput!): ProfileType @join__field(graph: ACCOUNT_SERVICE)
+  recordUser(userInfo: UserInfoInput!): [UserAnalytics!]! @join__field(graph: ACTIVITY_TRACKER)
+  createCompany(newProduct: InputProductionCompany!): ProductionCompanyType! @join__field(graph: ASSET_INGESTION_SERVICE)
+  updateCompany(id: ID!, newCompany: InputProductionCompany!): ProductionCompanyType! @join__field(graph: ASSET_INGESTION_SERVICE)
+  deleteCompany(id: ID!, companyName: String!): Boolean! @join__field(graph: ASSET_INGESTION_SERVICE)
+  createMovie(newMovie: NewMovieInput!): MovieType! @join__field(graph: ASSET_INGESTION_SERVICE)
+
+  """
+  From Elastic.co
+  Overwriting the document in Elasticsearch is just as efficient as an update operation would be, because
+  internally an update would consist of deleting the old document and then indexing an entirely new document
+  """
+  updateMovie(newMovie: NewMovieInput!, movieId: ID!): MovieType! @join__field(graph: ASSET_INGESTION_SERVICE)
+
+  """
+  There are two ways of doing this:
+  One way is to include a field 'is_deleted' to indicate that they are no longer valid
+  The other way is, in this context, instead of sending Kafka messages to elasticsearch where ordering or queing isnt necessary
+  We can simply call a GRAPHQL API directly that signals to ELasticsearch to delete the corresponding documents
+  Steps:
+  Delete from Scylla DB
+  Delete Document from Elasticsearch
+  """
+  deleteMovie(movieId: ID!, title: String!): Boolean! @join__field(graph: ASSET_INGESTION_SERVICE)
+
+  """
+  Bulk inserting dataset from TMDB, USED FOR database query analysis and optimisation
+  """
+  batchInsertData(insertData: BulkStreamInsertData!): [MovieType!]! @join__field(graph: ASSET_INGESTION_SERVICE)
+
+  """
+  Bulk inserting dataset from TMDB, USED FOR database query analysis and optimisation
+  """
+  streamInsertData(insertData: BulkStreamInsertData!): [MovieType!]! @join__field(graph: ASSET_INGESTION_SERVICE)
+  createPerson(newPerson: PersonInput!): PersonType! @join__field(graph: ASSET_INGESTION_SERVICE)
+  updatePerson(personId: ID!, newPerson: PersonInput!): PersonType! @join__field(graph: ASSET_INGESTION_SERVICE)
+  deleteGenre(personId: ID!, personName: String!): Boolean! @join__field(graph: ASSET_INGESTION_SERVICE)
+  createNewProduct(newProduct: NewProductInput!): ProductType @join__field(graph: PRODUCTS)
+  updateProduct(productId: ID!, userId: ID!, newInput: NewProductInput!): ProductType! @join__field(graph: PRODUCTS)
+  deleteProduct(productId: ID!): Boolean! @join__field(graph: PRODUCTS)
+
+  """Deletes the index under this id"""
+  deleteMovieDocByID(movieId: ID!): Boolean! @join__field(graph: SEARCH_SERVICE)
+}
+
+"""
+ISO 8601 calendar date without timezone.
+Format: %Y-%m-%d
+
+# Examples
+
+* `1994-11-13`
+* `2000-02-24`
+"""
+scalar NaiveDate
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+  @join__type(graph: ASSET_SERVICE)
+  @join__type(graph: RECOMMENDATION_SERVICE)
+  @join__type(graph: SEARCH_SERVICE)
+
+"""
+ISO 8601 combined date and time without timezone.
+
+# Examples
+
+* `2015-07-01T08:59:60.123`,
+"""
+scalar NaiveDateTime
+  @join__type(graph: ACCOUNT_SERVICE)
+  @join__type(graph: PRODUCTS)
+
+input NewMovieInput
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  """Movie Title; not null"""
+  title: String!
+
+  """Year; defaulted to 0"""
+  year: Int
+
+  """A list of awards for this movie"""
+  awards: [String!]
+
+  """BusinessDate representing the movie budget and revenue"""
+  business: BusinessDataInput
+
+  """A list of countries associated in the movie"""
+  countries: [String!]
+
+  """
+  A list of genres, provided no unique Id as Indexing through
+  Elasticsearch will make it easier and cheaper filter through
+  """
+  genres: [String!]
+
+  """URI link to movie's homepage"""
+  homepage: String
+
+  """List of keywords of indexing purposes"""
+  keywords: [String!]
+
+  """List of languages"""
+  languages: [String!]
+
+  """Type of media; defaulted to Movie"""
+  mediaType: MediaType
+
+  """
+  List of MovieCasts names, people who were in the movie
+  Each person is searchable
+  """
+  movieCasts: [String!]
+
+  """
+  List of Production Companies that worked in making this movie
+  Each company is searchable
+  """
+  movieCompany: [String!]
+
+  """As inferred"""
+  movieDirector: [String!]
+
+  """As inferred"""
+  movieWriter: [String!]
+
+  """Movie plot,"""
+  overview: String
+
+  """S3-CDN image link"""
+  poster: String
+
+  """MediaRated: R, PG, Pg13, Nc17, G"""
+  rated: MediaRated
+
+  """Based on IMDB Ratings"""
+  rating: MovieRatingInput
+
+  """Released of Movie YYYY-MM-DD"""
+  releaseDate: NaiveDate
+
+  """In minutes"""
+  runtime: Int
+
+  """Current state of the movie"""
+  status: Status
+
+  """S3 Media Link"""
+  videoFile: String
+}
+
+input NewProductInput
+  @join__type(graph: PRODUCTS)
+{
+  name: String!
+  price: Int
+  weight: Int
+  category: String
+  createdBy: Int
+  tags: String
+
+  """users should not be able tto change the time manually"""
+  createdAt: NaiveDateTime
+  updatedAt: NaiveDateTime
+  description: String
+  imageUrl: String
+}
+
+input NewProfileInput
+  @join__type(graph: ACCOUNT_SERVICE)
+{
+  userId: ID!
+  username: String!
+  createdAt: NaiveDateTime!
+  updatedAt: NaiveDateTime
+}
+
+input NewUserInput
+  @join__type(graph: ACCOUNT_SERVICE)
+{
+  """Input Email"""
+  email: String!
+
+  """Password; Min Password Strength"""
+  hash: String!
+
+  """Optional Input, the values are generated automatically"""
+  createdAt: NaiveDateTime
+
+  """Optional input, the values are auto generated"""
+  updatedAt: NaiveDateTime
+
+  """
+  Username,
+  Min_length: 2 characters; Max_length: 50 characters
+  """
+  username: String!
+
+  """First_name, Non-nullable, min-length is 1"""
+  firstName: String!
+
+  """
+  Last name, non-nullable,
+  Min-length: 1; Max-length: 50
+  """
+  lastName: String!
+
+  """
+  User Profile image
+  Ideally, this image url is linked to a Static Database ie S3
+  """
+  imageUrl: String
+
+  """
+  User's last_login:
+  This is hidden from the user, however it will be automatically
+  updated everytime the user creates a new user and logins
+  """
+  lastLoginAt: NaiveDateTime
+
+  """
+  Optional, default values are set to USERS, can be set
+  to USERS, ADMIN, CUSTOMER, OPERATOR
+  """
+  role: Role
+}
+
+input PersonInput
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  """Person name"""
+  name: String!
+
+  """List of awards under the user name"""
+  awards: [String!]
+
+  """Biography of actor/actress"""
+  biography: String
+
+  """Birthday YYYY-MM-DD"""
+  birthday: NaiveDate
+
+  """Death date YYYY-MM-DD"""
+  deathDate: NaiveDate
+
+  """Gender, based on Enum"""
+  gender: Gender
+
+  """Person person website"""
+  homepage: String
+
+  """Movie characters or other names of person"""
+  knownFor: [String!]
+
+  """Person place of birth"""
+  placeOfBirth: String
+
+  """S3 profile image link"""
+  profilePath: [String!]
+}
+
+type PersonType
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  personId: ID!
+  name: String!
+  awards: [String!]!
+  biography: String!
+  birthday: NaiveDate!
+  deathDate: NaiveDate!
+  gender: String!
+  homepage: String!
+  knownFor: [String!]!
+  placeOfBirth: String!
+  profilePath: [String!]!
+}
+
+type ProductionCompanyType
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+  @join__type(graph: ASSET_SERVICE)
+  @join__type(graph: SEARCH_SERVICE)
+{
+  companyId: ID!
+  movieId: ID! @join__field(graph: ASSET_INGESTION_SERVICE)
+  description: String! @join__field(graph: ASSET_INGESTION_SERVICE)
+  headquarter: String! @join__field(graph: ASSET_INGESTION_SERVICE)
+  homepage: String! @join__field(graph: ASSET_INGESTION_SERVICE)
+  logoPath: String! @join__field(graph: ASSET_INGESTION_SERVICE)
+  name: String! @join__field(graph: ASSET_INGESTION_SERVICE)
+  originCountry: String! @join__field(graph: ASSET_INGESTION_SERVICE)
+  parentCompany: String! @join__field(graph: ASSET_INGESTION_SERVICE)
+}
+
+"""The Price Type in our System"""
+type ProductType
+  @join__type(graph: PRODUCTS)
+{
+  id: ID!
+  name: String!
+
+  """Price attribute can be Zero"""
+  price: Int
+  weight: Int
+  category: String
+  createdBy: Int
+  tags: String
+  createdAt: NaiveDateTime
+  updatedAt: NaiveDateTime
+  description: String
+  imageUrl: String
+}
+
+type ProfileType
+  @join__type(graph: ACCOUNT_SERVICE)
+{
+  profileId: ID!
+  id: ID!
+  username: String!
+  createdAt: NaiveDateTime!
+  updatedAt: NaiveDateTime
+}
+
+type Query
+  @join__type(graph: ACCOUNT_SERVICE)
+  @join__type(graph: ACTIVITY_TRACKER)
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+  @join__type(graph: ASSET_SERVICE)
+  @join__type(graph: PRODUCTS)
+  @join__type(graph: RECOMMENDATION_SERVICE)
+  @join__type(graph: SEARCH_SERVICE)
+{
+  testApi: String! @join__field(graph: ACCOUNT_SERVICE)
+
+  """Get all the users"""
+  getAllUsers: [UserType!]! @join__field(graph: ACCOUNT_SERVICE)
+
+  """Get User either from cache or Database"""
+  getUserById(userId: ID!): UserType @join__field(graph: ACCOUNT_SERVICE)
+
+  """Gets the user from the cache or database"""
+  getUserByUsername(username: String!): UserType @join__field(graph: ACCOUNT_SERVICE)
+  getProfilesFromUser(userId: ID!): [ProfileType!]! @join__field(graph: ACCOUNT_SERVICE)
+  getProfilesById(profileId: ID!): ProfileType! @join__field(graph: ACCOUNT_SERVICE)
+  getProfilesByUsername(username: String!): ProfileType! @join__field(graph: ACCOUNT_SERVICE)
+  getAllRecords: [UserAnalytics!]! @join__field(graph: ACTIVITY_TRACKER)
+  getUserRecords(userId: Int!): [UserAnalytics!]! @join__field(graph: ACTIVITY_TRACKER)
+  getAllCompanies: [ProductionCompanyType!]! @join__field(graph: ASSET_INGESTION_SERVICE)
+  getCompaniesByMovie(movieId: ID!): [ProductionCompanyType!]! @join__field(graph: ASSET_INGESTION_SERVICE)
+  getAllPersons: [PersonType!]! @join__field(graph: ASSET_INGESTION_SERVICE)
+  getPersonByName(personName: String!): PersonType! @join__field(graph: ASSET_INGESTION_SERVICE)
+  getPersonById(personId: ID!): PersonType! @join__field(graph: ASSET_INGESTION_SERVICE)
+  getAllMovies(pageSize: Int): [MovieType!]! @join__field(graph: ASSET_SERVICE)
+  getMovieById(title: String!, id: ID!): MovieType! @join__field(graph: ASSET_SERVICE)
+
+  """
+  Keeping Elasticsearch in sync
+  Only accessible by an admin
+  Queue items into Kafka and into ElasticSearch
+  """
+  ForcebatchIndexIntoElasticsearch(pageSize: Int): [MovieType!]! @join__field(graph: ASSET_SERVICE)
+
+  """
+  Our search indexing platform is more reliable if the search service can call the movie to be indexed
+  the incremental indexing pseed helps refresh data faster and appears more promptly in our consumer applications
+  """
+  ForceIndexMovieByID(movieId: ID!, movieName: String!): MovieType! @join__field(graph: ASSET_SERVICE)
+
+  """Get all products found inside the Database"""
+  getAllProducts: [ProductType!]! @join__field(graph: PRODUCTS)
+  getProductById(id: ID!): ProductType @join__field(graph: PRODUCTS)
+  getShippingEstimate(id: ID!): Int @join__field(graph: PRODUCTS)
+  getProductsByCategory(category: String!): [ProductType!]! @join__field(graph: PRODUCTS)
+  getProductsByTags(tag: String!): [ProductType!]! @join__field(graph: PRODUCTS)
+  getUserRecentRecommendations(userId: Int!): [RecommendedType!]! @join__field(graph: RECOMMENDATION_SERVICE)
+  getAllRecommendedMovies: [RecommendedType!]! @join__field(graph: RECOMMENDATION_SERVICE)
+  getUserRecommendation(userId: Int!): [RecommendedType!]! @join__field(graph: RECOMMENDATION_SERVICE)
+
+  """Retrieve all indexed movies"""
+  searchAll(totalResult: Int, indexName: String! = "index_name()"): [MovieType!]! @join__field(graph: SEARCH_SERVICE)
+
+  """Retrieve all indexed movies"""
+  searchMovie(input: SearchTextInput!): AggregatedQuery @join__field(graph: SEARCH_SERVICE)
+
+  """
+  Execute this query under index_name with
+  Filter by term_name: term_value and give total_results
+  """
+  filterBy(filter: FilterQuery!): [MovieType!]! @join__field(graph: SEARCH_SERVICE)
+
+  """
+  For the sake of simplicity and ease of use in the frontend,
+  and after facing several alongside, I decided to get rid of using here struct
+  """
+  searchWithAggregatedFilter(query: String, termName: String, termValue: String, totalResult: Int, indexName: String! = "index_name()", fields: [String!], sortBy: String, order: String): [MovieType!]! @join__field(graph: SEARCH_SERVICE)
+
+  """Default Values of sort is Descending"""
+  sortMoviesAccordingly(input: SortAllMovies!): [MovieType!]! @join__field(graph: SEARCH_SERVICE)
+}
+
+type RecommendedType
+  @join__type(graph: RECOMMENDATION_SERVICE)
+{
+  userId: Int!
+  movieId: Int!
+  createdAt: NaiveDate!
+  title: String!
+}
+
+enum Role
+  @join__type(graph: ACCOUNT_SERVICE)
+{
+  ADMIN
+  CUSTOMER
+  OPERATOR
+  USER
+}
+
+input SearchTextInput
+  @join__type(graph: SEARCH_SERVICE)
+{
+  """Default Value to be Null or an empty string"""
+  query: String
+
+  """Default Value is set to 2 search results"""
+  totalResult: Int
+  indexName: String! = "index_name()"
+
+  """
+  Default Value of Sorting is made for
+  Ratings.Popularity, ASC
+  """
+  sortBy: String
+
+  """Defaulted to ASC"""
+  order: String
+
+  """Defaulted Agg field to Genres.Keyword"""
+  aggField: String
+
+  """Defaulted size to 2"""
+  aggSize: Int
+
+  """
+  Filter Search result by:
+  Default Value set to genres
+  """
+  filterBy: String
+
+  """
+  Value to filter the searches
+  Default set to empty Strimng
+  """
+  filterValue: String
+}
+
+input SortAllMovies
+  @join__type(graph: SEARCH_SERVICE)
+{
+  termName: String
+  order: String
+  totalResult: Int
+  indexName: String!
+}
+
+enum Status
+  @join__type(graph: ASSET_INGESTION_SERVICE)
+{
+  RUMOURED
+  PLANNED
+  IN_PRODUCTION
+  POST_PRODUCTION
+  RELEASED
+  CANCELED
+}
+
+type UserAnalytics
+  @join__type(graph: ACTIVITY_TRACKER)
+{
+  time: Int!
+  movieId: Int!
+  session: Int!
+  title: String!
+  userId: String!
+  liked: Boolean!
+}
+
+input UserInfoInput
+  @join__type(graph: ACTIVITY_TRACKER)
+{
+  movieId: Int!
+  userId: Int!
+  session: Int!
+  title: String!
+  liked: Boolean
+}
+
+input UserLogin
+  @join__type(graph: ACCOUNT_SERVICE)
+{
+  """Ensure that the value is in email format"""
+  email: String!
+
+  """
+  Non-nullable input for password.
+  Min-Char-len = 8 characters
+  """
+  password: String!
+}
+
+type UserType
+  @join__type(graph: ACCOUNT_SERVICE)
+  @join__type(graph: ACTIVITY_TRACKER)
+  @join__type(graph: RECOMMENDATION_SERVICE)
+{
+  """UUID"""
+  id: ID!
+
+  """Email Stype"""
+  email: String! @join__field(graph: ACCOUNT_SERVICE)
+  hash: String! @join__field(graph: ACCOUNT_SERVICE)
+  createdAt: NaiveDateTime @join__field(graph: ACCOUNT_SERVICE)
+  updatedAt: NaiveDateTime @join__field(graph: ACCOUNT_SERVICE)
+  username: String! @join__field(graph: ACCOUNT_SERVICE)
+  firstName: String! @join__field(graph: ACCOUNT_SERVICE)
+  lastName: String! @join__field(graph: ACCOUNT_SERVICE)
+  imageUrl: String @join__field(graph: ACCOUNT_SERVICE)
+  lastLoginAt: NaiveDateTime @join__field(graph: ACCOUNT_SERVICE)
+  role: String! @join__field(graph: ACCOUNT_SERVICE)
+}

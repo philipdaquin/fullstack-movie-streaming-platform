@@ -1,0 +1,53 @@
+
+
+
+
+type Mutation {
+	recordUser(userInfo: UserInfoInput!): [UserAnalytics!]!
+}
+
+type Query {
+	getAllRecords: [UserAnalytics!]!
+	getUserRecords(userId: Int!): [UserAnalytics!]!
+	_service: _Service!
+	_entities(representations: [_Any!]!): [_Entity]!
+}
+
+
+type UserAnalytics {
+	time: Int!
+	movieId: Int!
+	session: Int!
+	title: String!
+	userId: String!
+	liked: Boolean!
+}
+
+input UserInfoInput {
+	movieId: Int!
+	userId: Int!
+	session: Int!
+	title: String!
+	liked: Boolean
+}
+
+type UserType {
+	id: ID!
+}
+
+"""
+The `_Any` scalar is used to pass representations of entities from external
+services into the root `_entities` field for execution.
+"""
+scalar _Any
+
+union _Entity = UserType
+
+type _Service {
+	sdl: String
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}

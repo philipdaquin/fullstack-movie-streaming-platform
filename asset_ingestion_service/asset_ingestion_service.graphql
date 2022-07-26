@@ -1,0 +1,365 @@
+
+input BulkStreamInsertData {
+	discoverApi: String!
+	endpointPopular: String!
+	language: String
+	includedWith: String
+	numberOfBatch: Int
+}
+
+type BusinessData {
+	budget: Int!
+	revenue: Int!
+}
+
+input BusinessDataInput {
+	budget: Int
+	revenue: Int
+}
+
+
+enum Gender {
+	NOT_CONFIGURED
+	MALE
+	FEMALE
+	NON_BINARY
+	PREFER_TO_NOT_SAY
+}
+
+
+input InputProductionCompany {
+	"""
+	Movie id, this may not be necessary anywmore
+	"""
+	movieId: ID
+	"""
+	Company Name
+	"""
+	name: String
+	"""
+	Company Description
+	"""
+	description: String
+	"""
+	Company Location
+	"""
+	headquarter: String
+	"""
+	Company Website
+	"""
+	homepage: String
+	"""
+	S3 link to image
+	"""
+	logoPath: String
+	"""
+	Country of origin
+	"""
+	originCountry: String
+	"""
+	Parent Company
+	"""
+	parentCompany: String
+}
+
+
+enum MediaRated {
+	G
+	PG
+	PG_13
+	R
+	NC_17
+}
+
+enum MediaType {
+	MOVIE
+	TV_SERIES
+	TRAILER
+}
+
+type MovieRating {
+	imdbId: String!
+	metascore: Int!
+	popularity: Float!
+	voteCount: Int!
+	voteAverage: Float!
+}
+
+input MovieRatingInput {
+	imdbId: String
+	metascore: Int
+	popularity: Float
+	voteCount: Int
+	voteAverage: Float
+}
+
+type MovieType {
+	movieId: ID!
+	title: String!
+	year: Int!
+	awards: [String!]!
+	business: BusinessData!
+	countries: [String!]!
+	genres: [String!]!
+	homepage: String!
+	keywords: [String!]!
+	languages: [String!]!
+	mediaType: String!
+	movieCasts: [String!]!
+	movieCompany: [String!]!
+	movieDirector: [String!]!
+	movieWriter: [String!]!
+	overview: String!
+	poster: String!
+	rated: String!
+	rating: MovieRating!
+	releaseDate: NaiveDate!
+	runtime: Int!
+	status: String!
+	videoFile: String!
+}
+
+type Mutation {
+	createCompany(newProduct: InputProductionCompany!): ProductionCompanyType!
+	updateCompany(id: ID!, newCompany: InputProductionCompany!): ProductionCompanyType!
+	deleteCompany(id: ID!, companyName: String!): Boolean!
+	createMovie(newMovie: NewMovieInput!): MovieType!
+	"""
+	From Elastic.co
+	Overwriting the document in Elasticsearch is just as efficient as an update operation would be, because
+	internally an update would consist of deleting the old document and then indexing an entirely new document
+	"""
+	updateMovie(newMovie: NewMovieInput!, movieId: ID!): MovieType!
+	"""
+	There are two ways of doing this:
+	One way is to include a field 'is_deleted' to indicate that they are no longer valid
+	The other way is, in this context, instead of sending Kafka messages to elasticsearch where ordering or queing isnt necessary
+	We can simply call a GRAPHQL API directly that signals to ELasticsearch to delete the corresponding documents
+	Steps:
+	Delete from Scylla DB
+	Delete Document from Elasticsearch
+	"""
+	deleteMovie(movieId: ID!, title: String!): Boolean!
+	"""
+	Bulk inserting dataset from TMDB, USED FOR database query analysis and optimisation
+	"""
+	batchInsertData(insertData: BulkStreamInsertData!): [MovieType!]!
+	"""
+	Bulk inserting dataset from TMDB, USED FOR database query analysis and optimisation
+	"""
+	streamInsertData(insertData: BulkStreamInsertData!): [MovieType!]!
+	createPerson(newPerson: PersonInput!): PersonType!
+	updatePerson(personId: ID!, newPerson: PersonInput!): PersonType!
+	deleteGenre(personId: ID!, personName: String!): Boolean!
+}
+
+"""
+ISO 8601 calendar date without timezone.
+Format: %Y-%m-%d
+
+# Examples
+
+* `1994-11-13`
+* `2000-02-24`
+"""
+scalar NaiveDate
+
+input NewMovieInput {
+	"""
+	Movie Title; not null
+	"""
+	title: String!
+	"""
+	Year; defaulted to 0
+	"""
+	year: Int
+	"""
+	A list of awards for this movie
+	"""
+	awards: [String!]
+	"""
+	BusinessDate representing the movie budget and revenue
+	"""
+	business: BusinessDataInput
+	"""
+	A list of countries associated in the movie
+	"""
+	countries: [String!]
+	"""
+	A list of genres, provided no unique Id as Indexing through
+	Elasticsearch will make it easier and cheaper filter through
+	"""
+	genres: [String!]
+	"""
+	URI link to movie's homepage
+	"""
+	homepage: String
+	"""
+	List of keywords of indexing purposes
+	"""
+	keywords: [String!]
+	"""
+	List of languages
+	"""
+	languages: [String!]
+	"""
+	Type of media; defaulted to Movie
+	"""
+	mediaType: MediaType
+	"""
+	List of MovieCasts names, people who were in the movie
+	Each person is searchable
+	"""
+	movieCasts: [String!]
+	"""
+	List of Production Companies that worked in making this movie
+	Each company is searchable
+	"""
+	movieCompany: [String!]
+	"""
+	As inferred
+	"""
+	movieDirector: [String!]
+	"""
+	As inferred
+	"""
+	movieWriter: [String!]
+	"""
+	Movie plot,
+	"""
+	overview: String
+	"""
+	S3-CDN image link
+	"""
+	poster: String
+	"""
+	MediaRated: R, PG, Pg13, Nc17, G
+	"""
+	rated: MediaRated
+	"""
+	Based on IMDB Ratings
+	"""
+	rating: MovieRatingInput
+	"""
+	Released of Movie YYYY-MM-DD
+	"""
+	releaseDate: NaiveDate
+	"""
+	In minutes
+	"""
+	runtime: Int
+	"""
+	Current state of the movie
+	"""
+	status: Status
+	"""
+	S3 Media Link
+	"""
+	videoFile: String
+}
+
+input PersonInput {
+	"""
+	Person name
+	"""
+	name: String!
+	"""
+	List of awards under the user name
+	"""
+	awards: [String!]
+	"""
+	Biography of actor/actress
+	"""
+	biography: String
+	"""
+	Birthday YYYY-MM-DD
+	"""
+	birthday: NaiveDate
+	"""
+	Death date YYYY-MM-DD
+	"""
+	deathDate: NaiveDate
+	"""
+	Gender, based on Enum
+	"""
+	gender: Gender
+	"""
+	Person person website
+	"""
+	homepage: String
+	"""
+	Movie characters or other names of person
+	"""
+	knownFor: [String!]
+	"""
+	Person place of birth
+	"""
+	placeOfBirth: String
+	"""
+	S3 profile image link
+	"""
+	profilePath: [String!]
+}
+
+type PersonType {
+	personId: ID!
+	name: String!
+	awards: [String!]!
+	biography: String!
+	birthday: NaiveDate!
+	deathDate: NaiveDate!
+	gender: String!
+	homepage: String!
+	knownFor: [String!]!
+	placeOfBirth: String!
+	profilePath: [String!]!
+}
+
+type ProductionCompanyType {
+	companyId: ID!
+	movieId: ID!
+	description: String!
+	headquarter: String!
+	homepage: String!
+	logoPath: String!
+	name: String!
+	originCountry: String!
+	parentCompany: String!
+}
+
+type Query {
+	getAllCompanies: [ProductionCompanyType!]!
+	getCompaniesByMovie(movieId: ID!): [ProductionCompanyType!]!
+	getAllPersons: [PersonType!]!
+	getPersonByName(personName: String!): PersonType!
+	getPersonById(personId: ID!): PersonType!
+	_service: _Service!
+	_entities(representations: [_Any!]!): [_Entity]!
+}
+
+enum Status {
+	RUMOURED
+	PLANNED
+	IN_PRODUCTION
+	POST_PRODUCTION
+	RELEASED
+	CANCELED
+}
+
+
+"""
+The `_Any` scalar is used to pass representations of entities from external
+services into the root `_entities` field for execution.
+"""
+scalar _Any
+
+union _Entity = ProductionCompanyType
+
+type _Service {
+	sdl: String
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}

@@ -1,0 +1,10 @@
+numpy
+tensorflow
+tensorflow_recommenders
+tensorflow_datasets
+tensorflow_io
+kafka-python
+pandas
+flask 
+flask-cors
+

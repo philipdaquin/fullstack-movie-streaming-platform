@@ -1,0 +1,33 @@
+federation_version: 2
+subgraphs:
+  account_service:
+    routing_url: http://localhost:4001/graphql
+    schema:
+      file: ../account_service/account_service.graphql
+  products:
+    routing_url: http://localhost:4002/graphql
+    schema:
+      file: ../products/products.graphql
+  asset_ingestion_service:
+    routing_url: http://localhost:4003/graphql
+    schema:
+      file: ../asset_ingestion_service/asset_ingestion_service.graphql
+  asset_service:
+    routing_url: http://localhost:4004/graphql
+    schema:
+      file: ../asset_service/asset_service.graphql
+  search_service:
+    routing_url: http://localhost:4006/graphql
+    schema:
+      file: ../search_service/search_service.graphql
+  activity_tracker:
+    routing_url: http://localhost:4008/graphql
+    schema:
+      file: ../activity_tracker/activity_tracker.graphql
+  recommendation_service:
+    routing_url: http://localhost:4009/graphql
+    schema:
+      file: ../recommendation_service/recommendation_service.graphql
+
+
+      
