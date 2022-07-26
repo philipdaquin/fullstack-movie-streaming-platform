@@ -36,14 +36,14 @@ User Task:
 - Async SQLx + PostgreSQL
 - ScyllaDB/ CassandraDB 
 - Apache Kafka
-~~Apache Spark (pySpark)~~ 
-~~Hadoop(HDFS)~~ 
+- ~~Apache Spark (pySpark)~~ 
+- ~~Hadoop(HDFS)~~ 
 - AWS WORKFLOW
 - Elastic Stack (Elasticsearch, Kabana)
-~~Apache Beam and BigQuery~~ 
+- ~~Apache Beam and BigQuery~~ 
 - Influx DB
 - Tensorflow/ TFX
-~~BigQuery ML | Dataflow~~  
+- ~~BigQuery ML | Dataflow~~  
 
 ### General Logging Stack  
 - Prometheus
