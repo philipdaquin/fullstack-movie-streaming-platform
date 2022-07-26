@@ -5,7 +5,7 @@ The project was intended to build a system like Netflix/ Youtube/ Tiktok from Po
 
 Design a video on demand platform that lets users upload fast, watch and store videos like Tiktok, Youtube and Amazon Prime. Build the system so that it is always available for our users, highly scalable, high performance and low latency, cost effective and supported by different devices.
 
-##Goals & Tasks
+## Goals & Tasks
 User goals: 
 1.    Watch their favourite show seamlessly 
 2.    Wide range of choices to pick from 
@@ -36,14 +36,15 @@ User Task:
 - Async SQLx + PostgreSQL
 - ScyllaDB/ CassandraDB 
 - Apache Kafka
-##### deprecated - Apache Spark (pySpark) 
-##### deprecated - Hadoop(HDFS)
+~~Apache Spark (pySpark) 
+~~~Hadoop(HDFS)
 - AWS WORKFLOW
 - Elastic Stack (Elasticsearch, Kabana)
-##### deprecated - Apache Beam and BigQuery
+~~Apache Beam and BigQuery
 - Influx DB
 - Tensorflow/ TFX
-##### deprecated - BigQuery ML | Dataflow 
+ ~~BigQuery ML | Dataflow 
+
 ### General Logging Stack  
 - Prometheus
 - Open Telemetry
