@@ -1,4 +1,6 @@
 # Fullstack Movie Streaming Platform
+📺 Netflix in RUST/ NextJS, Actix-Web, Async Apollo-GraphQl, Cassandra/ ScyllaDB, Async SQLx, Spark, Kafka, Redis, Elasticsearch, Hadoop (dep), BigQueryML (dep), Apache Beam (dep), Influxdb Iox, Tensorflow
+
 ### System Design Prompt: Design Netflix 
 ##### Disclaimer:
 The project was intended to build a system like Netflix/ Youtube/ Tiktok from PoC to Production Like environment. Since I do not own the rights for any of the movies, I decided to replace the movie 'links' with Youtube Trailers instead
@@ -18,8 +20,6 @@ User Task:
 3.    Choose from a wide selection of videos
 4.    Watch movie
 
-📺 Netflix in RUST/ NextJS, Actix-Web, Async Apollo-GraphQl, Cassandra/ ScyllaDB, Async SQLx, Spark, Kafka, Redis, Elasticsearch, Hadoop (dep), BigQueryML (dep), Apache Beam (dep), Influxdb Iox, Tensorflow
-
 ## Tech stack
 ### Client 
 - NextJS/React/TypeScript
@@ -37,13 +37,13 @@ User Task:
 - ScyllaDB/ CassandraDB 
 - Apache Kafka
 ~~Apache Spark (pySpark) 
-~~~Hadoop(HDFS)
+~~Hadoop(HDFS)
 - AWS WORKFLOW
 - Elastic Stack (Elasticsearch, Kabana)
 ~~Apache Beam and BigQuery
 - Influx DB
 - Tensorflow/ TFX
- ~~BigQuery ML | Dataflow 
+~~BigQuery ML | Dataflow 
 
 ### General Logging Stack  
 - Prometheus
