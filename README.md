@@ -1,9 +1,8 @@
 # Fullstack Movie Streaming Platform
-📺 Netflix in RUST/ NextJS, Actix-Web, Async Apollo-GraphQl, Cassandra/ ScyllaDB, Async SQLx, Spark, Kafka, Redis, Elasticsearch, Hadoop (dep), BigQueryML (dep), Apache Beam (dep), Influxdb Iox, Tensorflow
+📺 Netflix in RUST/ NextJS, Actix-Web, Async Apollo-GraphQl, Cassandra/ ScyllaDB, Async SQLx, Spark, Kafka, Redis, Elasticsearch, Influxdb Iox, Tensorflow
 
 ### System Design Prompt: Design Netflix 
-##### Disclaimer:
-The project was intended to build a system like Netflix/ Youtube/ Tiktok from PoC to Production Like environment. Since I do not own the rights for any of the movies, I decided to replace the movie 'links' with Youtube Trailers instead
+##### Disclaimer: The project was intended to build a system like Netflix/ Youtube/ Tiktok from PoC to Production Like environment. Since I do not own the rights for any of the movies, I decided to replace the movie 'links' with Youtube Trailers instead. This is not the official repository. 
 
 Design a video on demand platform that lets users upload fast, watch and store videos like Tiktok, Youtube and Amazon Prime. Build the system so that it is always available for our users, highly scalable, high performance and low latency, cost effective and supported by different devices.
 
