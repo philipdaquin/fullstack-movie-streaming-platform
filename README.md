@@ -4,7 +4,7 @@
 ### System Design Prompt: Design Netflix 
 ##### Disclaimer: The project was intended to build a system like Netflix/ Youtube/ Tiktok from PoC to Production Like environment. Since I do not own the rights for any of the movies, I decided to replace the movie 'links' with Youtube Trailers instead. 
 
-### This is not the official repository. Original repo: 330 + commits
+##### This is not the official repository. Original repo: 330 + commits
 
 Design a video on demand platform that lets users upload fast, watch and store videos like Tiktok, Youtube and Amazon Prime. Build the system so that it is always available for our users, highly scalable, high performance and low latency, cost effective and supported by different devices.
 
