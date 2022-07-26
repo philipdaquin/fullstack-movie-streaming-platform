@@ -7,9 +7,6 @@ I was largely inspired by this architecture. I wanted to see if I could quickly 
 
 ## DEPLOY TO DOCKER/ KUBERNETES -> AWS, VERCEL
 
-### System Design Source: 
-https://systemdesignprimer.com/netflix-system-design/
-
 ## Architecture of this project 
 [
 ![architecture_sample](https://user-images.githubusercontent.com/85416532/179338067-ba374ff4-2825-4bff-a4a7-a0ae83085366.png)
