@@ -1,8 +1,25 @@
 # Fullstack Movie Streaming Platform
-### System Design Prompt: Design Netflix 
-The project was intended to build a system like Netflix/ Youtube/ Tiktok from PoC to Production Like environment. 
+📺 Netflix in RUST/ NextJS, Actix-Web, Async Apollo-GraphQl, Cassandra/ ScyllaDB, Async SQLx, Spark, Kafka, Redis, Elasticsearch, Influxdb Iox, Tensorflow
 
-📺 Netflix in RUST/ NextJS, Actix-Web, Async Apollo-GraphQl, Cassandra/ ScyllaDB, Async SQLx, Spark, Kafka, Redis, Elasticsearch, Hadoop (dep), BigQueryML (dep), Apache Beam (dep), Influxdb Iox, Tensorflow
+### System Design Prompt: Design Netflix 
+##### Disclaimer: The project was intended to build a system like Netflix/ Youtube/ Tiktok from PoC to Production Like environment. Since I do not own the rights for any of the movies, I decided to replace the movie 'links' with Youtube Trailers instead. 
+
+##### This is not the official repository. Original repo: 330 + commits
+
+Design a video on demand platform that lets users upload fast, watch and store videos like Tiktok, Youtube and Amazon Prime. Build the system so that it is always available for our users, highly scalable, high performance and low latency, cost effective and supported by different devices.
+
+## Goals & Tasks
+User goals: 
+1.    Watch their favourite show seamlessly 
+2.    Wide range of choices to pick from 
+3.    Seamless membership experience, which they cancel anytime  
+4.    Save favourite videos so they can watch it later 
+
+User Task: 
+1.    Sign up and pick a subscription plan 
+2.    Search/ browse their favourite shows 
+3.    Choose from a wide selection of videos
+4.    Watch movie
 
 ## Tech stack
 ### Client 
@@ -11,23 +28,24 @@ The project was intended to build a system like Netflix/ Youtube/ Tiktok from Po
 - CSS + HTML
 - Stripe Payments
 - Firebase
- ### Service 
+ ### Distributed System Tech Stack+ 
 - Apollo-Federation Router (Rust)
 - Async GraphQL 
 - Actix-Web
 - Redis
-- Docker / Kubernetes (soon)
+- Docker / Kubernetes (wip)
 - Async SQLx + PostgreSQL
 - ScyllaDB/ CassandraDB 
 - Apache Kafka
-- Apache Spark (pySpark) [##### deprecated]
-- Hadoop(HDFS) [##### deprecated] 
+- ~~Apache Spark (pySpark)~~ (wip w/ tensorflow)
+- ~~Hadoop(HDFS)~~ 
 - AWS WORKFLOW
 - Elastic Stack (Elasticsearch, Kabana)
-- Apache Beam and BigQuery
+- ~~Apache Beam and BigQuery~~ 
 - Influx DB
 - Tensorflow/ TFX
-- BigQuery ML | Dataflow [##### deprecated]
+- ~~BigQuery ML | Dataflow~~  
+
 ### General Logging Stack  
 - Prometheus
 - Open Telemetry
