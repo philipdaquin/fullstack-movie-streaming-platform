@@ -4697,3 +4697,36 @@ INFO: Unsupported notification method: $/setTrace
 2022.07.19 18:30:38 INFO  no build target found for /home/philip/rust-programming/fullstack/Netflix-Clone-WASM/[DEPRECATED]recommendation_service/src/main/scala/PrepareData.scala. Using presentation compiler with project's scala-library version: 3.1.3[0m
 2022.07.19 18:30:41 INFO  time: code lens generation in 47s[0m
 2022.07.19 23:21:57 INFO  shutting down Metals[0m
+2022.07.26 14:43:14 INFO  tracing is disabled for protocol LSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform/.metals/lsp.trace.json or /home/philip/.cache/metals/lsp.trace.json[0m
+2022.07.26 14:43:15 INFO  logging to file /home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform/.metals/metals.log[0m
+2022.07.26 14:43:15 INFO  Started: Metals version 0.11.7 in workspace '/home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform' for client Visual Studio Code 1.69.2.[0m
+2022.07.26 14:43:15 WARN  Can't instantiate JavaInteractiveSemanticdb (version: Some(JdkVersion(11)), jdkHome: /usr/lib/jvm/default-java, javac exists: false)[0m
+2022.07.26 14:43:16 INFO  time: initialize in 0.38s[0m
+2022.07.26 14:43:16 WARN  Flyway upgrade recommended: H2 2.1.214 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.1.210.[0m
+2022.07.26 14:43:16 WARN  Build server is not auto-connectable.[0m
+2022.07.26 14:43:16 WARN  no build tool detected in workspace '/home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+2022.07.26 14:43:20 WARN  no build target for: /home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform/[DEPRECATED]recommendation_service/src/main/scala/PrepareData.scala[0m
+2022.07.26 14:43:21 INFO  shutting down Metals[0m
+2022.07.26 14:43:21 WARN  Flyway upgrade recommended: H2 2.1.214 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.1.210.[0m
+2022.07.26 14:43:26 INFO  no build target found for /home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform/[DEPRECATED]recommendation_service/src/main/scala/PrepareData.scala. Using presentation compiler with project's scala-library version: 3.1.3[0m
+2022.07.26 14:43:29 INFO  time: code lens generation in 8.64s[0m
+java.util.concurrent.RejectedExecutionException: Task Future(<not completed>) rejected from java.util.concurrent.ThreadPoolExecutor@2af2ca3b[Shutting down, pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 104]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$AbortPolicy.rejectedExecution(ThreadPoolExecutor.java:2055)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.reject(ThreadPoolExecutor.java:825)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.execute(ThreadPoolExecutor.java:1355)
+	at scala.concurrent.impl.ExecutionContextImpl.execute(ExecutionContextImpl.scala:21)
+	at scala.concurrent.impl.Promise$Transformation.submitWithValue(Promise.scala:429)
+	at scala.concurrent.impl.Promise$DefaultPromise.submitWithValue(Promise.scala:338)
+	at scala.concurrent.impl.Promise$DefaultPromise.tryComplete0(Promise.scala:285)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:504)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2022.10.16 07:10:38 INFO  tracing is disabled for protocol LSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform/.metals/lsp.trace.json or /home/philip/.cache/metals/lsp.trace.json[0m
+2022.10.16 07:10:38 INFO  logging to file /home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform/.metals/metals.log[0m
+2022.10.16 07:10:38 INFO  Started: Metals version 0.11.9 in workspace '/home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform' for client Visual Studio Code 1.72.2.[0m
+2022.10.16 07:10:49 INFO  time: initialize in 10s[0m
+2022.10.16 07:10:51 WARN  Build server is not auto-connectable.[0m
+2022.10.16 07:10:51 WARN  no build tool detected in workspace '/home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+Oct 16, 2022 7:11:15 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
