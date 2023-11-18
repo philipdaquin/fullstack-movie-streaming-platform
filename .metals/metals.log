@@ -4730,3 +4730,4 @@ java.util.concurrent.RejectedExecutionException: Task Future(<not completed>) re
 2022.10.16 07:10:51 WARN  no build tool detected in workspace '/home/philip/rust-programming/fullstack/Fullstack-Movie-Streaming-Platform'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
 Oct 16, 2022 7:11:15 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2022.10.16 07:32:39 INFO  shutting down Metals[0m

@@ -1,0 +1,47 @@
+version: '1.0'
+
+services: 
+  account_service: 
+    build: .
+    container_name: account_service
+    ports:
+      - "4001:4001"
+    depends_on:
+      postgres-db:
+        condition: service_started
+    networks:
+      - account-service-local
+
+  redis-db:
+    image: redis:latest
+    container_name: redis-db
+    command: [ "redis-server", "--protected-mode", "no" ]
+    ports:
+    - "6379:6379"
+    networks:
+      - account-service-local
+
+  postgres-db:
+    restart: always
+    image: postgres
+    container_name: postgres-container-test
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=sqlx-users
+    networks:
+      - account-service-local
+
+networks:
+  account-service-local: 
+    external: false
+volumes:
+  db-data:
